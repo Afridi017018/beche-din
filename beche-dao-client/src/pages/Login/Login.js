@@ -1,10 +1,44 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
     const handleLoginSubmit = (e)=>{
         e.preventDefault()
-        console.log(e.target.email.value)
+   
+        const {email, password} = e.target;
+        
+        const user = {
+            email: email.value,
+            password: password.value
+        }
+
+        toast.dismiss();
+
+        fetch(`http://localhost:3100/api/user/login`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+
+        })
+        .then(res=> res.json())
+        .then((data)=> {
+
+            if(data.success)
+            {
+                toast.success(data.message); 
+            }
+
+            else{
+                toast.error(data.message);
+            }
+
+        })
+
+
     }
 
     return (
@@ -46,7 +80,7 @@ const Login = () => {
                     </button>
                 </div>
                 <div className="text-center">
-                    <small>Already have an account? Register</small>
+                    <small className="text-gray-500">Don't have an account?{" "}<Link to='/register' className="text-blue-600">Register</Link> </small>
                 </div>
             </form>
         </div>
