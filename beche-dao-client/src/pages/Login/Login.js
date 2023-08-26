@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { userLogin } from '../../apiCalls.js/users';
 
 const Login = () => {
 
-    const handleLoginSubmit = (e)=>{
-        e.preventDefault()
+    const handleLoginSubmit = async (e)=>{
+        e.preventDefault();
+        
    
         const {email, password} = e.target;
         
@@ -14,29 +16,20 @@ const Login = () => {
             password: password.value
         }
 
+        
+      const data = await userLogin(user);
+
         toast.dismiss();
+        if(data.success)
+        {
+            localStorage.setItem("token", data.token)
+            toast.success(data.message); 
+        }
 
-        fetch(`http://localhost:3100/api/user/login`,{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-
-        })
-        .then(res=> res.json())
-        .then((data)=> {
-
-            if(data.success)
-            {
-                toast.success(data.message); 
-            }
-
-            else{
-                toast.error(data.message);
-            }
-
-        })
+        else{
+            toast.error(data.message);
+        }
+        
 
 
     }

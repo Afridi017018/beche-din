@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import { addProduct } from '../../apiCalls.js/products';
 
 Modal.setAppElement('#root');
 
@@ -43,7 +45,7 @@ const customStyles = {
 
 
 
-const ProductsForm = ({modalIsOpen, setIsOpen}) => {
+const ProductsForm = ({ modalIsOpen, setIsOpen }) => {
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,7 +57,7 @@ const ProductsForm = ({modalIsOpen, setIsOpen}) => {
     warranty: false,
     accessories: false,
     box: false,
-  
+
   })
 
 
@@ -76,9 +78,20 @@ const ProductsForm = ({modalIsOpen, setIsOpen}) => {
     setIsOpen(false);
   }
 
-  const handleAddProduct = (event) => {
+  const handleAddProduct = async (event) => {
     event.preventDefault();
-    console.log(formData);
+
+    const data = await addProduct(formData);
+
+    toast.dismiss();
+    if (data.success) {
+      toast.success(data.message);
+    }
+
+    else {
+      toast.error(data.message);
+    }
+
     closeModal();
   }
 
@@ -153,10 +166,10 @@ const ProductsForm = ({modalIsOpen, setIsOpen}) => {
 
                 <div className='flex-1'>
                   <label htmlFor="category">Category</label>
-                  <select className='block mt-1 border border-gray-600 focus:outline-none focus:border-black h-7 lg:h-10 w-full' 
-                  required
-                  value={formData.category} 
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  <select className='block mt-1 border border-gray-600 focus:outline-none focus:border-black h-7 lg:h-10 w-full'
+                    required
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   >
                     <option disabled defaultValue value="">Select</option>
                     <option value="electronics">Electronics</option>

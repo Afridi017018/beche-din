@@ -1,54 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { userRegister } from '../../apiCalls.js/users';
 
 const Register = () => {
-    const handleRegisterSubmit = (e)=>{
+    const handleRegisterSubmit = async (e) => {
 
         e.preventDefault()
-   
-        const {name, email, password} = e.target;
-        
+
+        const { name, email, password } = e.target;
+
         const user = {
             name: name.value,
             email: email.value,
             password: password.value
         }
 
+
+
+        const data = await userRegister(user);
+
         toast.dismiss();
+        if (data.success) {
+            toast.success(data.message);
+        }
 
-        fetch(`http://localhost:3100/api/user/register`,{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
+        else {
+            toast.error(data.message);
+        }
 
-        })
-        .then(res=> res.json())
-        .then((data)=> {
-
-            if(data.success)
-            {
-                toast.success(data.message); 
-            }
-
-            else{
-                toast.error(data.message);
-            }
-
-        })
-
-        
-    
     }
+    
     return (
         <div className="flex justify-center items-center h-screen bg-sky-100 ">
-        
+
             <form className="w-full max-w-sm bg-white drop-shadow-2xl rounded-md  px-8 pt-6 pb-8 mb-4" onSubmit={handleRegisterSubmit}>
 
                 <h1 className="font-bold text-2xl mb-2 text-gray-600">Register</h1>
-                <hr className="mb-3"/>
+                <hr className="mb-3" />
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
@@ -95,7 +84,7 @@ const Register = () => {
                     </button>
                 </div>
                 <div className="text-center">
-                    <small className="text-gray-500">Already have an account?{" "}<Link to ='/login' className="text-blue-600">Login</Link></small>
+                    <small className="text-gray-500">Already have an account?{" "}<Link to='/login' className="text-blue-600">Login</Link></small>
                 </div>
             </form>
         </div>
