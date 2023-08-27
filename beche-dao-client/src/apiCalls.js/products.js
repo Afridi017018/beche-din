@@ -16,4 +16,22 @@ const addProduct = async (payload)=>{
 }
 
 
-module.exports = {addProduct};
+const getAllProducts = async ()=>{
+
+    const response = await fetch(`http://localhost:3100/api/product/get-all-products`,{
+        method:'GET',
+        headers:{
+            'Content-Type': 'application/json',
+            // 'authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        // body: JSON.stringify(payload)
+
+    })
+
+    const data = await response.json();
+    return data;
+
+}
+
+
+module.exports = {addProduct, getAllProducts};
