@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
-import { addProduct } from '../../apiCalls.js/products';
+import { addProduct, updateProduct } from '../../apiCalls.js/products';
 
 Modal.setAppElement('#root');
 
@@ -45,21 +45,7 @@ const customStyles = {
 
 
 
-const ProductsForm = ({ modalIsOpen, setIsOpen }) => {
-
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    category: "",
-    age: "",
-    bill: false,
-    warranty: false,
-    accessories: false,
-    box: false,
-
-  })
-
+const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditProduct, setIsEditProduct }) => {
 
 
 
@@ -76,12 +62,23 @@ const ProductsForm = ({ modalIsOpen, setIsOpen }) => {
       box: false,
     })
     setIsOpen(false);
+    setIsEditProduct(null)
   }
 
   const handleAddProduct = async (event) => {
     event.preventDefault();
 
-    const data = await addProduct(formData);
+    let data;
+    if (isEditProduct) {
+
+      data = await updateProduct(isEditProduct, formData);
+
+    }
+
+    else {
+      data = await addProduct(formData);
+
+    }
 
     toast.dismiss();
     if (data.success) {
@@ -91,6 +88,7 @@ const ProductsForm = ({ modalIsOpen, setIsOpen }) => {
     else {
       toast.error(data.message);
     }
+
 
     closeModal();
   }

@@ -8,6 +8,20 @@ const Products = () => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
+    const [isEditProduct, setIsEditProduct] = useState(null);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        age: "",
+        bill: false,
+        warranty: false,
+        accessories: false,
+        box: false,
+    
+      });
 
     function openModal() {
         setIsOpen(true);
@@ -37,6 +51,28 @@ const Products = () => {
             return context.slice(0, maxLength) + '...';
         }
     };
+
+    const handleEditProduct = (e)=>{
+        setIsEditProduct(e._id);
+        // console.log(isEditProduct)
+
+         setFormData({
+            name: e.name,
+            description: e.description,
+            price: e.price,
+            category: e.category,
+            age: e.age,
+            bill: e.bill,
+            warranty: e.warranty,
+            accessories: e.accessories,
+            box: e.box,
+        
+          })
+
+          openModal(true)
+
+    }
+
 
     return (
         <div>
@@ -78,8 +114,8 @@ const Products = () => {
                                     <td>{e.status}</td>
                                     <td>
                                         <div className='flex gap-3'>
-                                        <AiOutlineEdit /> 
-                                        <AiOutlineDelete /> 
+                                        <AiOutlineEdit className='cursor-pointer' onClick={()=>handleEditProduct(e)}/> 
+                                        <AiOutlineDelete className='cursor-pointer' /> 
                                         </div>
                                     </td>
                                 </tr>
@@ -93,14 +129,21 @@ const Products = () => {
             :
 
             <div className='text-4xl font-bold flex justify-center items-center text-gray-300 my-44'>
-                <img className='w-24' src="https://cdnl.iconscout.com/lottie/premium/thumb/empty-box-5708298-4748209.gif" alt="" />
+                <img className='w-24 pointer-events-none' src="https://cdnl.iconscout.com/lottie/premium/thumb/empty-box-5708298-4748209.gif" alt="" />
                 <h1>Empty List !</h1>
                 </div>
         }
 
 
             <div>
-                <ProductsForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
+                <ProductsForm 
+                modalIsOpen={modalIsOpen} 
+                setIsOpen={setIsOpen} 
+                formData={formData} 
+                setFormData={setFormData}
+                isEditProduct={isEditProduct}
+                setIsEditProduct={setIsEditProduct} 
+                />
             </div>
 
         </div>

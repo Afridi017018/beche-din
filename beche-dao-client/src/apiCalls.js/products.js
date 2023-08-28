@@ -34,4 +34,22 @@ const getAllProducts = async ()=>{
 }
 
 
-module.exports = {addProduct, getAllProducts};
+const updateProduct = async (id, payload)=>{
+
+    const response = await fetch(`http://localhost:3100/api/product/update-product/${id}`,{
+        method:'PUT',
+        headers:{
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(payload)
+
+    })
+
+    const data = await response.json();
+    return data;
+
+}
+
+
+module.exports = {addProduct, getAllProducts, updateProduct};
