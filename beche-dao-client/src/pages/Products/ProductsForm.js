@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
-import { addProduct, updateProduct } from '../../apiCalls.js/products';
+import { addProduct, updateProduct} from '../../apiCalls.js/products';
+import { AiOutlineDelete } from 'react-icons/ai'
 
 Modal.setAppElement('#root');
 
@@ -38,7 +39,7 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     width: '80%',
-    height: '90%',
+    height: '100%',
 
   },
 };
@@ -47,6 +48,8 @@ const customStyles = {
 
 const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditProduct, setIsEditProduct }) => {
 
+  const [images, setImages] = useState([]);
+  const [productImages, setProductImages] = useState([])
 
 
   function closeModal() {
@@ -62,22 +65,51 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
       box: false,
     })
     setIsOpen(false);
-    setIsEditProduct(null)
+    setIsEditProduct(null);
+    setImages([]);
+    setProductImages([]);
   }
+
+
+  useEffect(() => {
+    const imageCall = async () => {
+      if (isEditProduct) {
+        // const imgData = await loadImages(isEditProduct._id);
+        const imgData = isEditProduct.images
+        setProductImages(imgData);
+
+        // console.log(isEditProduct)
+        // console.log(imgData);
+      }
+    };
+    imageCall();
+  }, [isEditProduct]);
+
+
 
   const handleAddProduct = async (event) => {
     event.preventDefault();
 
+    /////
+
+    // const imageData = new FormData();
+    // images.forEach((image) => imageData.append('images', image));
+
+
+    //////
+
     let data;
     if (isEditProduct) {
 
-      data = await updateProduct(isEditProduct, formData);
+      data = await updateProduct(isEditProduct._id, formData, images);
 
     }
 
     else {
-      data = await addProduct(formData);
+      data = await addProduct(formData, images);
 
+      // await uploadImages(imageData);
+      // console.log(imgData);
     }
 
     toast.dismiss();
@@ -92,6 +124,35 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
 
     closeModal();
   }
+
+
+
+  const handleImageUpload = (event) => {
+    const newImages = Array.from(event.target.files);
+    // console.log(newImages)
+
+    if (newImages.length + images.length + productImages.length > 3) {
+      alert('You can upload a maximum of 3 images.');
+      return;
+    }
+
+    setImages([...images, ...newImages]);
+  };
+
+
+  const handleStoredImageDelete = (id) => {
+    const restImages = productImages.filter((e) => e.public_id !== id);
+
+    setProductImages(restImages);
+
+  }
+
+  const handleLocalImageDelete = (id) =>{
+    const restImages = images.filter((e, index)=> index !== id);
+
+    setImages(restImages);
+  }
+
 
   return (
     <div>
@@ -128,7 +189,7 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
 
               <div className='mb-5'>
                 <label htmlFor="description">Description</label>
-                <textarea className='border border-gray-600 w-full focus:outline-none focus:border-black h-14 lg:h-28 mt-1' type="text"
+                <textarea className='border border-gray-600 w-full focus:outline-none focus:border-black h-14 mt-1' type="text"
                   value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
@@ -180,7 +241,7 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
               </div>
 
 
-              <div className='grid grid-cols-2 lg:grid-cols-4 gap-14 mb-4'>
+              <div className='grid grid-cols-2 lg:grid-cols-4 gap-14 mb-5'>
 
 
                 {additionalThings.map((item) => (
@@ -205,7 +266,49 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
 
               </div>
 
-              <div className='flex gap-5 justify-center mt-10'>
+              <div className='mb-4'>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  required={images.length + productImages.length === 0 ? true : false}
+
+                />
+                <div className="mt-3 flex gap-5">
+
+                  {productImages.length > 0 && productImages.map((image, index) => (
+                    <div key={index} className='flex'>
+                      <img
+
+                        src={image.secure_url}
+                        alt={`Preview ${index + 1}`}
+                        className="w-10 h-10 mr-1 mb-4 rounded border"
+                      />
+
+                      <AiOutlineDelete className='cursor-pointer' onClick={() => handleStoredImageDelete(image.public_id)} />
+                    </div>
+                  ))}
+
+                  {images.map((image, index) => (
+
+                    <div key={index} className='flex'>
+                      <img
+
+                        src={URL.createObjectURL(image)}
+                        alt={`Preview ${index + 1}`}
+                        className="w-10 h-10 mr-1 mb-4 rounded border"
+                      />
+
+                      <AiOutlineDelete className='cursor-pointer' onClick={()=> handleLocalImageDelete(index)} />
+                    </div>
+
+                  ))}
+
+                </div>
+              </div>
+
+              <div className='flex gap-5 justify-center'>
                 <button onClick={() => closeModal()} className="btn btn-outline w-32">Cancel</button>
                 <button type='submit' className="btn btn-info w-32 border border-sky-500 bg-white  text-sky-500 hover:text-white">Save</button>
               </div>

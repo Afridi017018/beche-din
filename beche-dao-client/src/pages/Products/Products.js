@@ -53,7 +53,7 @@ const Products = () => {
     };
 
     const handleEditProduct = (e)=>{
-        setIsEditProduct(e._id);
+        setIsEditProduct(e);
         // console.log(isEditProduct)
 
          setFormData({
