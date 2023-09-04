@@ -1,13 +1,13 @@
-const addProduct = async (payload, images)=>{
+const addProduct = async (payload, images) => {
 
     const formData = new FormData();
 
-formData.append("payload", JSON.stringify(payload));
-images.forEach((image) => formData.append('images', image));
+    formData.append("payload", JSON.stringify(payload));
+    images.forEach((image) => formData.append('images', image));
 
-    const response = await fetch(`http://localhost:3100/api/product/add-product`,{
-        method:'POST',
-        headers:{
+    const response = await fetch(`http://localhost:3100/api/product/add-product`, {
+        method: 'POST',
+        headers: {
             // 'Content-Type': 'application/json',
             'authorization': `Bearer ${localStorage.getItem("token")}`
         },
@@ -21,11 +21,14 @@ images.forEach((image) => formData.append('images', image));
 }
 
 
-const getAllProducts = async ()=>{
 
-    const response = await fetch(`http://localhost:3100/api/product/get-all-products`,{
-        method:'GET',
-        headers:{
+
+
+const getAllProducts = async () => {
+
+    const response = await fetch(`http://localhost:3100/api/product/get-all-products`, {
+        method: 'GET',
+        headers: {
             'Content-Type': 'application/json',
             // 'authorization': `Bearer ${localStorage.getItem("token")}`
         },
@@ -39,16 +42,19 @@ const getAllProducts = async ()=>{
 }
 
 
-const updateProduct = async (id, payload, images)=>{
+
+
+
+const updateProduct = async (id, payload, images) => {
 
     const formData = new FormData();
 
-formData.append("payload", JSON.stringify(payload));
-images.forEach((image) => formData.append('images', image));
+    formData.append("payload", JSON.stringify(payload));
+    images.forEach((image) => formData.append('images', image));
 
-    const response = await fetch(`http://localhost:3100/api/product/update-product/${id}`,{
-        method:'PUT',
-        headers:{
+    const response = await fetch(`http://localhost:3100/api/product/update-product/${id}`, {
+        method: 'PUT',
+        headers: {
             // 'Content-Type': 'application/json',
             'authorization': `Bearer ${localStorage.getItem("token")}`
         },
@@ -64,40 +70,50 @@ images.forEach((image) => formData.append('images', image));
 
 
 
-// const uploadImages = async (payload)=>{
-//     const response = await fetch(`http://localhost:3100/api/product/upload`, {
-//         method:'POST',
-//         headers:{
-//             'authorization': `Bearer ${localStorage.getItem("token")}`
-//         },
-//          body: payload
 
-//     })
+const deleteProduct = async (id) => {
 
-//     const data = await response.json();
-//     return data;
+    const response = await fetch(`http://localhost:3100/api/product/delete-product/${id}`, {
+        method: 'DELETE',
+        headers: {
+            // 'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        // body: JSON.stringify(payload)
 
-// }
+    })
 
-
-// const loadImages = async (id)=>{
-//     const response = await fetch(`http://localhost:3100/api/product/load-images/${id}`, {
-//         method:'GET',
-//         headers:{
-//             'Content-Type': 'application/json',
-//             'authorization': `Bearer ${localStorage.getItem("token")}`
-//         },
-//         // body: JSON.stringify(payload)
-
-//     })
-
-//     const data = await response.json();
-//     return data;
-
-// }
+    const data = await response.json();
+    return data;
+}
 
 
 
 
 
-module.exports = {addProduct, getAllProducts, updateProduct};
+
+const deletSingleImage = async (imageId, productId) => {
+    const response = await fetch(`http://localhost:3100/api/product/delete-single-image?imageId=${imageId}&productId=${productId}`, {
+        method: 'DELETE',
+        headers: {
+            // 'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        // body: JSON.stringify(payload)
+
+    })
+
+    const data = await response.json();
+    return data;
+}
+
+
+
+
+
+
+
+
+
+
+module.exports = { addProduct, getAllProducts, updateProduct, deleteProduct, deletSingleImage };

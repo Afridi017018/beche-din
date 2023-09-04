@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
-import { addProduct, updateProduct} from '../../apiCalls.js/products';
+import { addProduct, deletSingleImage, updateProduct } from '../../apiCalls.js/products';
 import { AiOutlineDelete } from 'react-icons/ai'
 
 Modal.setAppElement('#root');
@@ -46,7 +46,17 @@ const customStyles = {
 
 
 
-const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditProduct, setIsEditProduct }) => {
+const ProductsForm = (
+  { modalIsOpen,
+    setIsOpen,
+    formData,
+    setFormData,
+    isEditProduct,
+    setIsEditProduct,
+    // deleteProduct,
+    // setDeleteProduct, 
+  }
+) => {
 
   const [images, setImages] = useState([]);
   const [productImages, setProductImages] = useState([])
@@ -145,13 +155,18 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
 
     setProductImages(restImages);
 
+    deletSingleImage(id, isEditProduct._id);
+
+
   }
 
-  const handleLocalImageDelete = (id) =>{
-    const restImages = images.filter((e, index)=> index !== id);
+  const handleLocalImageDelete = (id) => {
+    const restImages = images.filter((e, index) => index !== id);
 
     setImages(restImages);
   }
+
+
 
 
   return (
@@ -300,7 +315,7 @@ const ProductsForm = ({ modalIsOpen, setIsOpen, formData, setFormData, isEditPro
                         className="w-10 h-10 mr-1 mb-4 rounded border"
                       />
 
-                      <AiOutlineDelete className='cursor-pointer' onClick={()=> handleLocalImageDelete(index)} />
+                      <AiOutlineDelete className='cursor-pointer' onClick={() => handleLocalImageDelete(index)} />
                     </div>
 
                   ))}
