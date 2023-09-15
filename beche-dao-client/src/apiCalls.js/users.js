@@ -32,5 +32,22 @@ const userLogin = async (user)=>{
 
 }
 
+const getCurrentUser = async ()=>{
 
-module.exports = { userRegister, userLogin }
+    const response = await fetch(`http://localhost:3100/api/user/get-current-user`,{
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+            // body: JSON.stringify(user)
+
+        })
+
+        const data = await response.json();
+        return data;
+
+}
+
+
+module.exports = { userRegister, userLogin, getCurrentUser }

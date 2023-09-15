@@ -24,15 +24,15 @@ const addProduct = async (payload, images) => {
 
 
 
-const getAllProducts = async () => {
+const getAllProducts = async (obj) => {
 
     const response = await fetch(`http://localhost:3100/api/product/get-all-products`, {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // 'authorization': `Bearer ${localStorage.getItem("token")}`
+            'authorization': `Bearer ${localStorage.getItem("token")}`
         },
-        // body: JSON.stringify(payload)
+        body: JSON.stringify(obj)
 
     })
 
@@ -111,9 +111,25 @@ const deletSingleImage = async (imageId, productId) => {
 
 
 
+const updateProductStatus = async (id, status) => {
+
+    const response = await fetch(`http://localhost:3100/api/product/update-product-status/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({status})
+
+    })
+
+    const data = await response.json();
+    return data;
+
+}
 
 
 
 
 
-module.exports = { addProduct, getAllProducts, updateProduct, deleteProduct, deletSingleImage };
+module.exports = { addProduct, getAllProducts, updateProduct, deleteProduct, deletSingleImage, updateProductStatus };

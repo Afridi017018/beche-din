@@ -12,7 +12,7 @@ const App = () => {
         
         return (
             <div>
-              
+              {/* This is home */}
             </div>
         )
     

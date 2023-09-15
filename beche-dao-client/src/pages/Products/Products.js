@@ -4,11 +4,12 @@ import { deleteProduct, getAllProducts } from '../../apiCalls.js/products';
 import ProductsForm from './ProductsForm';
 
 
-const Products = () => {
+const Products = ({currentUser}) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
     const [isEditProduct, setIsEditProduct] = useState(null);
+
 
 
     const [formData, setFormData] = useState({
@@ -30,7 +31,8 @@ const Products = () => {
 
 
     const fetchData = async () => {
-        const data = await getAllProducts();
+ 
+        const data = await getAllProducts({ seller: currentUser });
         setAllProducts(data.products)
     };
 
@@ -122,8 +124,8 @@ const Products = () => {
                                         <td className='hidden lg:block'>{truncate(e.description, 20)}</td>
                                         <td>{e.price}</td>
                                         <td className='hidden lg:block'>{e.age}</td>
-                                        <td>{e.category}</td>
-                                        <td>{e.status}</td>
+                                        <td className='capitalize'>{e.category}</td>
+                                        <td className={`capitalize text-lg ${e.status === 'approved' && 'text-green-600'} ${e.status === 'rejected' && 'text-red-600'} ${e.status === 'blocked' && 'font-semibold'}`}>{e.status}</td>
                                         <td>
                                             <div className='flex gap-3'>
                                                 <AiOutlineEdit className='cursor-pointer' onClick={() => handleEditProduct(e)} />

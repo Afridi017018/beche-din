@@ -1,43 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { getCurrentUser } from '../../apiCalls.js/users';
-import Bids from '../Products/Bids';
-import General from '../Products/General';
-import Products from '../Products/Products';
+import React, { useState } from 'react';
+import AllProducts from './AllProducts';
 
-
-
-
-
-
-
-const Profile = () => {
-
-    const [currentUser, setCurrentUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-
+const Admin = () => {
     const [activeTab, setActiveTab] = useState(0); 
 
-    useEffect(()=>{
-        const getUser  = async()=>{
-           const data = await getCurrentUser();
-        //    console.log(data.data._id)
-        setCurrentUser(data.data._id);
-        setIsLoading(false);
-
-        }
-        getUser();
-    },[currentUser])
-
+    
     const tabComponents = [
-        isLoading || <Products currentUser ={currentUser}/>,
-       <Bids />,
-       <General />
+        <AllProducts/>,
+    //    <Users />,
+
+    // "Products",
+    "Users"
+ 
     ];
 
     const tabNames = [
         "Products",
-        "Bids",
-        "General"
+        "Users"
     ];
 
     const handleTabClick = (index) => {
@@ -65,4 +44,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default Admin;
