@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AllProducts from './AllProducts';
+import Users from './Users';
 
 const Admin = () => {
     const [activeTab, setActiveTab] = useState(0); 
@@ -7,7 +8,7 @@ const Admin = () => {
     
     const tabComponents = [
         <AllProducts/>,
-    //    <Users />,
+       <Users />,
 
     // "Products",
     "Users"
