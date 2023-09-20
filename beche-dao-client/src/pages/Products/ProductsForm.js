@@ -184,7 +184,7 @@ const ProductsForm = (
         <div>
 
           <div className='flex justify-center'>
-            <h2 className='text-xl font-bold'> ADD PRODUCT</h2>
+            <h2 className='text-xl font-bold'>ADD PRODUCT</h2>
           </div>
 
           <div className='text-base lg:text-lg font-medium'>

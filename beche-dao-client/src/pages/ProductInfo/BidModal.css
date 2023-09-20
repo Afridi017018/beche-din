@@ -1,0 +1,15 @@
+/* In your CSS file */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Adjust the alpha (4th parameter) to control darkness */
+    z-index: 1; /* Ensure it's above other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+  

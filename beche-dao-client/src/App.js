@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Profile from "./pages/Profile/Profile";
 import Test from "./pages/Home/Test";
 import Admin from "./pages/Admin/Admin";
+import ProductInfo from "./pages/ProductInfo/ProductInfo";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
    <Routes>
    {/* <Route path="/test" element={<Test />}/> */}
    <Route path="/" element={<Home />}/>
+   <Route path="/product/:id" element={<ProductInfo />}/>
     <Route path="/login" element={<Login />}/>
     <Route path="/register" element={<Register />}/>
     <Route path="/user-profile" element={<Profile />}/>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAllProducts } from '../../apiCalls.js/products';
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
     const [homeProducts, setHomeProducts] = useState([]);
     // const [filter, setFilter] = useState({status: "approved"});
 
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -39,9 +41,9 @@ const Home = () => {
     return (
         <div className='grid grid-cols-4 my-5 justify-items-center gap-5'>
             {homeProducts.length > 0 &&
-                homeProducts.map((e) => (
+                homeProducts.map((e,i) => (
                  
-                    <div className="card card-compact w-72 rounded-lg shadow-2xl">
+                    <div key={i+1} onClick={()=>navigate(`/product/${e._id}`)} className="card card-compact w-72 rounded-lg shadow-2xl cursor-pointer">
                         <figure><img src={e.images[0].secure_url} className="w-full h-32" alt="Shoes" /></figure>
                         <div className="card-body">
                             <h2 className="card-title">{e.name}</h2>

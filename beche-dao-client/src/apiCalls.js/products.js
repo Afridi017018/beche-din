@@ -42,6 +42,22 @@ const getAllProducts = async (obj) => {
 }
 
 
+const getProductById = async (id)=>{
+    const response = await fetch(`http://localhost:3100/api/product/get-product-by-id/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        // body: JSON.stringify(obj)
+
+    })
+
+    const data = await response.json();
+    return data;
+}
+
+
 
 
 
@@ -132,4 +148,4 @@ const updateProductStatus = async (id, status) => {
 
 
 
-module.exports = { addProduct, getAllProducts, updateProduct, deleteProduct, deletSingleImage, updateProductStatus };
+module.exports = { addProduct, getAllProducts, updateProduct, deleteProduct, deletSingleImage, updateProductStatus, getProductById };
