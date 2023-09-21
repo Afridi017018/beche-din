@@ -3,7 +3,9 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getAllBids } from '../../apiCalls.js/bids';
 import { getProductById } from '../../apiCalls.js/products';
+import { getCurrentUser } from '../../apiCalls.js/users';
 import BidModal from './BidModal';
 
 const ProductInfo = () => {
@@ -11,6 +13,22 @@ const ProductInfo = () => {
     const [product, setProduct] = useState(null);
     const [imgIndex, setImgIndex] = useState(0);
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [allBids, setAllBids] = useState([])
+
+    const [currentUser, setCurrentUser] = useState(null);
+
+    const { id } = useParams();
+
+    useEffect(()=>{
+        const getUser  = async()=>{
+           const data = await getCurrentUser();
+        //    console.log(data.data._id)
+        setCurrentUser(data.data._id);
+        // setIsLoading(false);
+
+        }
+        getUser();
+    },[currentUser])
 
     function openModal() {
         setIsOpen(true);
@@ -21,8 +39,7 @@ const ProductInfo = () => {
     //     setIsOpen(false);
     //   }
 
-    const { id } = useParams();
-
+    
     useEffect(() => {
         const getProductData = async () => {
             const data = await getProductById(id);
@@ -34,6 +51,24 @@ const ProductInfo = () => {
         getProductData();
     }, [id])
 
+
+
+
+    useEffect(()=>{
+        const fetchAllBids = async ()=>{
+             const data = await getAllBids({product: id})
+            setAllBids(data.data);
+            // console.log(data.data);
+
+        }
+
+       id && fetchAllBids();
+    //    id && getProductData();
+        
+    },[id, modalIsOpen])
+
+
+
     return (
         <div>
 
@@ -43,7 +78,7 @@ const ProductInfo = () => {
                     {/* image section */}
                     <section>
                         <div>
-                        <img className='w-full h-80 rounded-md' src={product.images[imgIndex].secure_url} alt="" />
+                        <img className='w-full h-96 rounded-md' src={product.images[imgIndex].secure_url} alt="" />
                         </div>
 
                           <div className='flex gap-2 my-4'>
@@ -126,19 +161,29 @@ const ProductInfo = () => {
                         <div>
                             <div className='flex justify-between'>
                             <h2 className='text-xl text-red-900 font-bold'>Bids</h2>
-                            <button onClick={openModal} className='border border-dotted border-black px-2 py-1 font-medium'>Place Bid</button>
-                            </div>
-                            {/* <div className='flex justify-between'>
-                                <p className='text-gray-500 font-semibold'>Name</p>
-                                <p className='text-gray-500 font-semibold'>${product.seller.name}</p>
+                            <button onClick={openModal} className={`rounded-sm w-24 h-10 bg-white border border-dotted border-black px-2 py-1 font-medium ${product.seller._id === currentUser ? 'disabled:cursor-not-allowed text-gray-500 bg-gray-200' : ''}`} disabled={product.seller._id === currentUser}>Place Bid</button>
                             </div>
 
-                            <div className='flex justify-between'>
-                                <p className='text-gray-500 font-semibold'>Email</p>
-                                <p className='text-gray-500 font-semibold'>${product.seller.email}</p>
-                            </div> */}
+
+                            {
+                                allBids.length > 0 && 
+                                allBids.map((e,i)=>(
+
+                                    <div key={i+1} className='border border-gray-300 my-2 px-2 py-1'>
+                               <div className='flex justify-between font-semibold'>
+                                   <h5>{e.buyer.name}</h5>
+                                   <h5>${e.bidAmount}</h5>
+                               </div>
+                               <div className='flex justify-between text-xs font-medium text-gray-500'>
+                                <p>Placed On</p>
+                                <p>{moment(e.createdAt).format("MMM D, YYYY hh:mm A")}</p>
+                               </div>
+                            </div>
+
+                                ))
+                            }
+
                             
-                            <hr className='my-3' />
                         </div>
                     </section>
 
@@ -146,7 +191,7 @@ const ProductInfo = () => {
 
             }
       
-      <BidModal  modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}/>
+      {product && <BidModal  modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} product={product} />}
 
 
         </div>

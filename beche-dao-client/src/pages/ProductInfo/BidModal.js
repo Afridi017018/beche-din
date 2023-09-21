@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+import { toast } from 'react-toastify';
 import Modal from 'react-modal';
 import { AiOutlineCloseSquare } from "react-icons/ai";
 
 import './BidModal.css'
+import { placeBid } from '../../apiCalls.js/bids';
+
 
 
 Modal.setAppElement('#root');
@@ -22,10 +25,13 @@ const customStyles = {
 
 
 
-const BidModal = ({ modalIsOpen, setIsOpen }) => {
+const BidModal = ({ modalIsOpen, setIsOpen, product }) => {
 
 
-
+const [bidData, setBidData] = useState({
+    bidAmount: product ? product.price : "",
+    message: ""
+})
 
     // function openModal() {
     //   setIsOpen(true);
@@ -34,8 +40,20 @@ const BidModal = ({ modalIsOpen, setIsOpen }) => {
 
     function closeModal() {
         setIsOpen(false);
+        setBidData({
+            bidAmount: product ? product.price : "",
+            message: ""
+        })
     }
 
+
+    const handleAddBid = async (event)=>{
+        toast.dismiss();
+        event.preventDefault();
+        const data = await placeBid({...bidData, product: product._id, seller: product.seller._id});
+        toast.success(data.message)
+        closeModal();
+    }
 
     return (
         <div>
@@ -52,26 +70,25 @@ const BidModal = ({ modalIsOpen, setIsOpen }) => {
                 </div>
 
                 <div>
-                    <form>
+                    <form onSubmit={handleAddBid}>
                         <div className='mb-5'>
                             <label htmlFor="bidAmount">Bid Amount</label>
-                            <input className='border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="number"
-                                //   value={formData.name}
-                                //   onChange={(e) =>
-                                //     setFormData({ ...formData, name: e.target.value })
-                                //   }
+                            <input className='border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1 px-2' type="number"
+                                  value={bidData.bidAmount}
+                                  onChange={(e) =>
+                                    setBidData({ ...bidData, bidAmount: e.target.value })
+                                  }
                                 required
                             />
                         </div>
 
                         <div className='mb-5'>
                             <label htmlFor="Message">Message</label>
-                            <textarea className='border border-gray-600 w-full focus:outline-none focus:border-black h-14 mt-1' type="text"
-                                //   value={formData.description}
-                                //   onChange={(e) =>
-                                //     setFormData({ ...formData, description: e.target.value })
-                                //   }
-                                // required
+                            <textarea className='px-2 border border-gray-600 w-full focus:outline-none focus:border-black h-14 mt-1' type="text"
+                                //   value={bidData.message}
+                                  onChange={(e) =>
+                                    setBidData({ ...bidData, message: e.target.value })
+                                  }
                             />
                         </div>
                         <div className='flex gap-5 justify-end'>

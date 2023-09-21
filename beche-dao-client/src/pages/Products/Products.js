@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'
 import { deleteProduct, getAllProducts } from '../../apiCalls.js/products';
+import BidDashBoardModal from './BidDashBoardModal';
 import ProductsForm from './ProductsForm';
 
 
-const Products = ({currentUser}) => {
+const Products = ({ currentUser }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
     const [isEditProduct, setIsEditProduct] = useState(null);
+    const [bidModalIsOpen, setIsBidModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState("");
 
 
 
@@ -31,7 +34,7 @@ const Products = ({currentUser}) => {
 
 
     const fetchData = async () => {
- 
+
         const data = await getAllProducts({ seller: currentUser });
         setAllProducts(data.products)
     };
@@ -88,6 +91,12 @@ const Products = ({currentUser}) => {
     }
 
 
+    const handleGetBids = (productId)=>{
+        setSelectedProduct(productId)
+        setIsBidModalOpen(true);
+    }
+
+
     return (
         <div>
 
@@ -128,8 +137,10 @@ const Products = ({currentUser}) => {
                                         <td className={`capitalize text-lg ${e.status === 'approved' && 'text-green-600'} ${e.status === 'rejected' && 'text-red-600'} ${e.status === 'blocked' && 'font-semibold'}`}>{e.status}</td>
                                         <td>
                                             <div className='flex gap-3'>
+                                                <img className={`h-5 w-6 cursor-pointer ${e.status ==='approved' || " opacity-30 cursor-not-allowed" }`} onClick={e.status === 'approved' ? ()=>handleGetBids(e._id) : null} src="/bid.png" alt="" disabled = {e.status !=='approved'} />
                                                 <AiOutlineEdit className='cursor-pointer' onClick={() => handleEditProduct(e)} />
                                                 <AiOutlineDelete className='cursor-pointer' onClick={() => handleDeleteProduct(e)} />
+
                                             </div>
                                         </td>
                                     </tr>
@@ -161,6 +172,10 @@ const Products = ({currentUser}) => {
                 // setDeleteProduct = {setDeleteProduct} 
                 />
             </div>
+
+                 <div>
+                  <BidDashBoardModal bidModalIsOpen={bidModalIsOpen} setIsBidModalOpen={setIsBidModalOpen} selectedProduct={selectedProduct} />
+                 </div>
 
         </div>
     );

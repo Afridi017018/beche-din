@@ -44,10 +44,10 @@ const Home = () => {
                 homeProducts.map((e,i) => (
                  
                     <div key={i+1} onClick={()=>navigate(`/product/${e._id}`)} className="card card-compact w-72 rounded-lg shadow-2xl cursor-pointer">
-                        <figure><img src={e.images[0].secure_url} className="w-full h-32" alt="Shoes" /></figure>
+                        <figure><img src={e.images[0].secure_url} className="w-full h-32" alt="" /></figure>
                         <div className="card-body">
                             <h2 className="card-title">{e.name}</h2>
-                            <p className=' text-gray-500'>{truncate(e.description, 42)}</p>
+                            <p className=' text-gray-500'>{truncate(e.description, 41)}</p>
                             <hr />
                             <h4 className=' text-lg font-semibold'>${e.price}</h4>
                             
