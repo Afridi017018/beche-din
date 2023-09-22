@@ -137,7 +137,7 @@ const Products = ({ currentUser }) => {
                                         <td className={`capitalize text-lg ${e.status === 'approved' && 'text-green-600'} ${e.status === 'rejected' && 'text-red-600'} ${e.status === 'blocked' && 'font-semibold'}`}>{e.status}</td>
                                         <td>
                                             <div className='flex gap-3'>
-                                                <img className={`h-5 w-6 cursor-pointer ${e.status ==='approved' || " opacity-30 cursor-not-allowed" }`} onClick={e.status === 'approved' ? ()=>handleGetBids(e._id) : null} src="/bid.png" alt="" disabled = {e.status !=='approved'} />
+                                                <img className={`h-5 w-6 ${e.status ==='approved' ? "cursor-pointer" : "opacity-30 cursor-not-allowed"}`} onClick={e.status === 'approved' ? ()=>handleGetBids(e._id) : null} src="/bid.png" alt="" disabled = {e.status !=='approved'} />
                                                 <AiOutlineEdit className='cursor-pointer' onClick={() => handleEditProduct(e)} />
                                                 <AiOutlineDelete className='cursor-pointer' onClick={() => handleDeleteProduct(e)} />
 

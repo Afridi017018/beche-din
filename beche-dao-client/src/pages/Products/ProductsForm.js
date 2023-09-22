@@ -193,7 +193,7 @@ const ProductsForm = (
 
               <div className='mb-5'>
                 <label htmlFor="name">Name</label>
-                <input className='border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="text"
+                <input className='px-2 border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="text"
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -204,7 +204,7 @@ const ProductsForm = (
 
               <div className='mb-5'>
                 <label htmlFor="description">Description</label>
-                <textarea className='border border-gray-600 w-full focus:outline-none focus:border-black h-14 mt-1' type="text"
+                <textarea className='px-2 border border-gray-600 w-full focus:outline-none focus:border-black h-14 mt-1' type="text"
                   value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
@@ -218,7 +218,7 @@ const ProductsForm = (
 
                 <div className='flex-1'>
                   <label htmlFor="price">Price</label>
-                  <input className='border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="number"
+                  <input className='px-2 border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="number"
                     value={formData.price}
                     onChange={(e) =>
                       setFormData({ ...formData, price: e.target.value })
@@ -229,7 +229,7 @@ const ProductsForm = (
 
                 <div className='flex-1'>
                   <label htmlFor="age">Age</label>
-                  <input className='border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="number"
+                  <input className='px-2 border border-gray-600 w-full focus:outline-none focus:border-black h-7 lg:h-10 mt-1' type="number"
                     value={formData.age}
                     onChange={(e) =>
                       setFormData({ ...formData, age: e.target.value })
@@ -250,6 +250,7 @@ const ProductsForm = (
                     <option value="fashion">Fashion</option>
                     <option value="home">Home</option>
                     <option value="sports">Sports</option>
+                    <option value="books">Books</option>
                   </select>
                 </div>
 

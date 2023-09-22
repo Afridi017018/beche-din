@@ -121,6 +121,10 @@ const ProductInfo = () => {
                                 <p className='text-gray-500 font-semibold'>${product.price}</p>
                             </div>
                             <div className='flex justify-between'>
+                                <p className='text-gray-500 font-semibold'>Age</p>
+                                <p className='text-gray-500 font-semibold'>{product.age} {`${product.age < 2 ? 'month' : 'months'}`}</p>
+                            </div>
+                            <div className='flex justify-between'>
                                 <p className='text-gray-500 font-semibold'>Category</p>
                                 <p className='text-gray-500 font-semibold capitalize'>{product.category}</p>
                             </div>
