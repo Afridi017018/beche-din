@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllProducts } from '../../apiCalls.js/products';
-import Filters from '../../components/Navbar/Filters/Filters';
+import Filters from '../../components/Filters/Filters';
 import { BsFilterSquare } from "react-icons/bs";
+
 
 
 const Home = () => {

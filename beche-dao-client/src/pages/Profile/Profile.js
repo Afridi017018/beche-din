@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCurrentUser } from '../../apiCalls.js/users';
+import MyBids from '../../components/MyBids/MyBids';
 import Bids from '../Products/Bids';
 import General from '../Products/General';
 import Products from '../Products/Products';
@@ -30,13 +31,13 @@ const Profile = () => {
 
     const tabComponents = [
         isLoading || <Products currentUser ={currentUser}/>,
-       <Bids />,
+       <MyBids />,
        <General />
     ];
 
     const tabNames = [
         "Products",
-        "Bids",
+        "My Bids",
         "General"
     ];
 
